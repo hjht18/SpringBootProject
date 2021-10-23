@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ArticleDAO">
+
+	<!-- 
+	<resultMap id="articleResult" type="article">
+		<result property="title" column="article_title"/>
+		<result property="content" column="article_content"/>
+	</resultMap>
+	 -->
+	
+	<insert id="insert">
+		<![CDATA[
+		INSERT INTO spring_crud VALUES(IDX_SEQ.NEXTVAL-1, #{article_title}, #{article_content})
+		]]>
+	</insert>
+	
+	<update id="update">
+
+		UPDATE spring_crud 
+		SET article_title = #{article_title}, 
+			article_content = #{article_content} 
+		WHERE article_id = (SELECT MAX(article_id) FROM spring_crud)
+
+	</update>
+	
+	<delete id="delete">
+	<![CDATA[
+		DELETE FROM spring_crud WHERE article_id = (SELECT MAX(article_id) FROM spring_crud)
+	]]>
+	</delete>
+	
+	<select id="getArticle" resultType="ArticleBean">
+	<![CDATA[
+		SELECT * FROM spring_crud WHERE article_id = (SELECT MAX(article_id) FROM spring_crud)
+	]]>
+	</select>
+	
+</mapper>
