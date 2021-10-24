@@ -7,10 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO {
-
-	public void add(User user) throws ClassNotFoundException, SQLException {
+	
+	private Connection getConnection() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/board?" + "characterEncoding=UTF-8&serverTimezone=UTC", "jspexam", "jsppw");
+
+		return c;
+	}
+
+	public void add(User user) throws ClassNotFoundException, SQLException {
+		Connection c = getConnection();
 		
 		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
 		ps.setString(1, user.getId());
@@ -24,8 +30,7 @@ public class UserDAO {
 	}
 	
 	public User get(String id) throws SQLException, ClassNotFoundException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/board?" + "characterEncoding=UTF-8&serverTimezone=UTC", "jspexam", "jsppw");
+		Connection c = getConnection();
 		
 		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
 		ps.setString(1, id);
