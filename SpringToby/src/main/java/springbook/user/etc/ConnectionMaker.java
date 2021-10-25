@@ -1,4 +1,4 @@
-package springbook.user.domain;
+package springbook.user.etc;
 
 import java.sql.Connection;
 import java.sql.SQLException;

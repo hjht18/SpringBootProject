@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/board?serverTimezone=UTC" />
+		<property name="username" value="jspexam"/>
+		<property name="password" value="jsppw"/>
+	</bean>
+	
+	<bean id="userDAO" class="springbook.user.dao.UserDAO">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+</beans>

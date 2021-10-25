@@ -1,4 +1,4 @@
-package springbook.user.domain;
+package springbook.user.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,17 +6,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
+import springbook.user.domain.User;
+import springbook.user.etc.ConnectionMaker;
+
 public class UserDAO {
 	
-	private ConnectionMaker connectionMaker;
+	private DataSource dataSource;
 	
-	public UserDAO(ConnectionMaker connectionMaker) {
-		this.connectionMaker = connectionMaker;
+	// 수정자(setter) 메소드 DI 방식을 사용한 UserDAO
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
-	
 
 	public void add(User user) throws ClassNotFoundException, SQLException {
-		Connection c = connectionMaker.makeConnection();
+		Connection c = dataSource.getConnection();
 		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?,?,?)");
 		ps.setString(1, user.getId());
 		ps.setString(2, user.getName());
@@ -28,8 +33,9 @@ public class UserDAO {
 		c.close();
 	}
 	
+
 	public User get(String id) throws SQLException, ClassNotFoundException {
-		Connection c = connectionMaker.makeConnection();
+		Connection c = dataSource.getConnection();
 		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
 		ps.setString(1, id);
 		
